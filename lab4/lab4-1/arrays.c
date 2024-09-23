@@ -9,8 +9,6 @@
 
 #include "arrays.h"
 
-#include <stdio.h>
-
 
 /* Exercise 1. */
 
