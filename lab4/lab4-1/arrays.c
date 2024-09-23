@@ -9,15 +9,21 @@
 
 #include "arrays.h"
 
+#include <stdio.h>
+
+
 /* Exercise 1. */
 
 /* Return the average magnitude of the signal represented by
  * the n doubles in x[]. 
  * This function assumes that parameter n is >= 1.
  */
-double avg_magnitude(double x[], int n)
-{
-    return -1.0;
+double avg_magnitude(double x[], int n){
+    double sum = 0.0;
+    for (int i = 0; i < n; i++) {
+        sum += fabs(x[i]);
+    }
+    return sum / n;
 }
 
 /* Exercise 2. */
@@ -26,8 +32,7 @@ double avg_magnitude(double x[], int n)
  * the n doubles in x[].
  * This function assumes that parameter n is >= 1.
  */
-double avg_power(double x[], int n)
-{
+double avg_power(double x[], int n){
     return -1.0;
 }
 
@@ -36,8 +41,7 @@ double avg_power(double x[], int n)
 /* Return the largest of the n doubles in arr[]. 
  * This function assumes that parameter n is >= 1.
  */
-double maxi(double arr[], int n)
-{
+double maxi(double arr[], int n){
     return -1.0;
 }
 
@@ -46,8 +50,7 @@ double maxi(double arr[], int n)
 /* Return the smallest of the n doubles in arr[]. 
  * This function assumes that parameter n is >= 1.
  */
-double mini(double arr[], int n)
-{
+double mini(double arr[], int n){
     return -1.0;
 }
 
@@ -57,6 +60,6 @@ double mini(double arr[], int n)
  * This function assumes that parameter n is >= 2, and that at least
  * two of the values in x[] are different.
  */
-void normalize(double x[], int n)
-{
+void normalize(double x[], int n){
+
 }
