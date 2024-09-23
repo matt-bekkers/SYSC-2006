@@ -33,7 +33,11 @@ double avg_magnitude(double x[], int n){
  * This function assumes that parameter n is >= 1.
  */
 double avg_power(double x[], int n){
-    return -1.0;
+    double sum = 0.0;
+    for (int i = 0; i < n; i++) {
+        sum += x[i] * x[i];
+    }
+    return sum / n;
 }
 
 /* Exercise 3. */
@@ -42,7 +46,13 @@ double avg_power(double x[], int n){
  * This function assumes that parameter n is >= 1.
  */
 double maxi(double arr[], int n){
-    return -1.0;
+    double largest = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > largest) {
+            largest = arr[i];
+        }
+    }
+    return largest;
 }
 
 /* Exercise 4. */
@@ -51,7 +61,13 @@ double maxi(double arr[], int n){
  * This function assumes that parameter n is >= 1.
  */
 double mini(double arr[], int n){
-    return -1.0;
+    double smallest = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < smallest) {
+            smallest = arr[i];
+        }
+    }
+    return smallest;
 }
 
 /* Exercise 5. */
@@ -61,5 +77,9 @@ double mini(double arr[], int n){
  * two of the values in x[] are different.
  */
 void normalize(double x[], int n){
-
+    double minimum = mini(x, n);
+    double max = maxi(x, n);
+    for (int i = 0; i < n; i++) {
+        x[i] = (x[i] - minimum) / (max - minimum);
+    }
 }
