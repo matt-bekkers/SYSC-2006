@@ -3,6 +3,7 @@
 	Student Name 	= Matthé Bekkers
 	Student Number	= 101297066
 */
+#include <stdbool.h>
 
 #include "a1_data_structures.h"
 
@@ -78,3 +79,5 @@ void update_project(const milestone_t * milestone_array, int num_milestones, con
 
 // Extra function prototypes/declarations go here
 
+/*Checks if ID is already used*/
+_Bool dupe_id(int id);

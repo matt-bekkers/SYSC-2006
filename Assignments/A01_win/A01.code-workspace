@@ -6,7 +6,9 @@
 	],
 	"settings": {
 		"files.associations": {
-			"math.h": "c"
+			"math.h": "c",
+			"stdio.h": "c",
+			"a1_functions.h": "c"
 		}
 	}
 }
