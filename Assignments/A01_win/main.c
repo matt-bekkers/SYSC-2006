@@ -13,6 +13,7 @@
 int main()
 {
 
+
     /** 1-  Display a welcome message **/
     
     printf("*-----------------------------------------------------*\n");
@@ -31,7 +32,6 @@ int main()
     printf("* Please enter the project name: ");
     scanf("%s", &project_name);
     printf("* You selected '%s' as your project.\n", project_name);
-    printf("*\n");
     printf("* Select your number of milestones below.\n");
     number_milestones = get_input_usi();
     printf("*  You selected '%d' as your number of milestones.\n", number_milestones);
@@ -42,8 +42,11 @@ int main()
      * The capacity of the array must be the max number of milestones the program 
      * can handle as per the instructions **/
 
-    int milestones[5];
+    milestone_t milestone_arr[3];
 
+    for (int i = 0; i < number_milestones; i++) {
+        init_milestone(&milestone_arr[i], NUM_ACTIVITIES);
+    }
     
     
     /** 4- Initialize the project **/
