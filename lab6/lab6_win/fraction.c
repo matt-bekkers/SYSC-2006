@@ -8,7 +8,7 @@
 /* Print fraction f in the form a/b. */
 void print_fraction(fraction_t f)
 {
-	printf("This function should print fraction f in the form a/b.");
+	printf("%d/%d\n", f.num, f.den);
 }
 
 /* Return the greatest common divisor of integers a and b; 
@@ -18,8 +18,17 @@ void print_fraction(fraction_t f)
 int gcd(int a, int b)
 {
 	/* Euclid's algorithm, using iteration and calculation of remainders. */
-
-	return -1;
+   int p, q;
+   p = abs(a);
+   q = abs(b);
+   int r = p % q;
+   while (r != 0) {
+      r = q % p;
+      q = p;
+      p = r;
+      
+   }
+	return q;
 }
 
 /* Return the reduced form of fraction f.
