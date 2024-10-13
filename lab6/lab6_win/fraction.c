@@ -50,7 +50,17 @@ int gcd(int a, int b)
 */
 fraction_t reduce(fraction_t f)
 { 
-	f = (fraction_t) {0, 0};
+   if (f.num == 0) {
+      f.den = 1;
+      return f;
+   }
+   if (f.den < 0) {
+      f.num = f.num * -1;
+      f.den = f.den * -1;
+   }
+   int q = gcd(f.num, f.den);
+   f.num = f.num / q;
+   f.den = f.den / q;
 	return f;
 }
 
@@ -62,8 +72,8 @@ fraction_t reduce(fraction_t f)
 */
 fraction_t make_fraction(int a, int b)
 {
-	fraction_t f = {0, 0};
-	return f;
+	fraction_t fr = {a, b};
+   fr = reduce(fr);
 }
 
 /* Return the sum of fractions f1 and f2.
@@ -72,7 +82,9 @@ fraction_t make_fraction(int a, int b)
  */
 fraction_t add_fractions(fraction_t f1, fraction_t f2)
 {
-	return make_fraction(0, 0);
+   int numerator = f1.num * f2.den + f1.den * f2.num;
+   int denoninator = f1.den * f2.den;
+	return make_fraction(numerator, denoninator);
 }
 
 /* Return the product of fractions f1 and f2.
@@ -81,5 +93,7 @@ fraction_t add_fractions(fraction_t f1, fraction_t f2)
  */
 fraction_t multiply_fractions(fraction_t f1, fraction_t f2)
 {
-	return make_fraction(0, 0);
+   int numerator = f1.num * f2.num;
+   int denominator = f1.den * f2.den;
+	return make_fraction(numerator, denominator);
 }
