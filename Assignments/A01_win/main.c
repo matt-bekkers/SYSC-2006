@@ -9,10 +9,14 @@
 #include <stdio.h>
 
 #include "a1_functions.h"
+//#include "a1_data_structures.h"
 
 int main()
 {
-
+    char project_name[255];
+    unsigned short int number_milestones, actual_project_duration;
+    float planned_project_cost;
+    _Bool project_completed;
 
     /** 1-  Display a welcome message **/
     
@@ -22,8 +26,6 @@ int main()
     printf("                                                       \n");
 
     /** 2- Get the project's name and number of milestones **/
-    char project_name[255];
-    int number_milestones;
 
     printf("*-----------------------------------------------------*\n");
     printf("*                    Main Menu                        *\n");
@@ -42,19 +44,25 @@ int main()
      * The capacity of the array must be the max number of milestones the program 
      * can handle as per the instructions **/
 
-    milestone_t milestone_arr[3];
+    milestone_t milestone_arr[5];
+    activity_t activity_arr[5][3];
 
     for (int i = 0; i < number_milestones; i++) {
         init_milestone(&milestone_arr[i], NUM_ACTIVITIES);
     }
     
+    printf("Project initialisation sucessful. Loading into main menu...\n");
     
     /** 4- Initialize the project **/
-    
+    // Calculate project cost
+    for (int i = 0; i < number_milestones; i++) {
+        printf("Milestone %hu cost: %.f\n", i, milestone_arr[i].activity_list[i].planned_cost);
+        planned_project_cost += milestone_arr[i].activity_list[i].planned_cost;
+    }
+    printf("The total planned cost for the project is %.f.\n");
 
     /** 5- Print the main menu **/
 
-   
 
     /** 6- Get user choice and handle it as per the instructions**/
     
