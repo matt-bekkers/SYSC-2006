@@ -7,6 +7,7 @@
 //Complete the includes
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "a1_functions.h"
 //#include "a1_data_structures.h"
@@ -15,8 +16,9 @@ int main()
 {
     char project_name[255];
     unsigned short int number_milestones, actual_project_duration;
-    float planned_project_cost;
-    _Bool project_completed;
+    float planned_project_duration = 0;
+    float planned_project_cost = 0;
+    _Bool project_completed = 0;
 
     /** 1-  Display a welcome message **/
     
@@ -36,6 +38,10 @@ int main()
     printf("* You selected '%s' as your project.\n", project_name);
     printf("* Select your number of milestones below.\n");
     number_milestones = get_input_usi();
+    while (number_milestones < 1 || number_milestones > 5) {
+        printf("Please select a value between 1 and 5: ");
+        scanf("%hu", &number_milestones);
+    }
     printf("*  You selected '%d' as your number of milestones.\n", number_milestones);
 
 
@@ -45,26 +51,47 @@ int main()
      * can handle as per the instructions **/
 
     milestone_t milestone_arr[5];
-    activity_t activity_arr[5][3];
+    //activity_t activity_arr[5][3];
 
-    for (int i = 0; i < number_milestones; i++) {
-        init_milestone(&milestone_arr[i], NUM_ACTIVITIES);
-    }
+    
     
     printf("Project initialisation sucessful. Loading into main menu...\n");
     
     /** 4- Initialize the project **/
-    // Calculate project cost
+
+    project_t project = init_project(project_name, milestone_arr, number_milestones, NUM_ACTIVITIES);
+    
+    // Calculate project cost & project duration
     for (int i = 0; i < number_milestones; i++) {
-        printf("Milestone %hu cost: %.f\n", i, milestone_arr[i].activity_list[i].planned_cost);
-        planned_project_cost += milestone_arr[i].activity_list[i].planned_cost;
+        for (int j = 0; j < NUM_ACTIVITIES; j++) {
+            printf("Milestone %hu, activity %d cost: %.f\n", i + 1, j + 1, milestone_arr[i].activity_list[j].planned_cost);
+            planned_project_cost += milestone_arr[i].activity_list[j].planned_cost;
+            planned_project_duration += milestone_arr[i].activity_list[j].planned_duration;
+        }
     }
-    printf("The total planned cost for the project is %.f.\n");
+
+    planned_project_duration = (int) (ceil(planned_project_duration / 8));
+
+    printf("The total planned cost for the project is %.f$.\n", planned_project_cost);
+    printf("The total planned duration for the project is %d.\n", planned_project_duration);
+
+    project.planned_cost = planned_project_cost;
+    project.planned_duration = planned_project_duration;
 
     /** 5- Print the main menu **/
-
+    print_main_menu();
 
     /** 6- Get user choice and handle it as per the instructions**/
+    unsigned short int choice;
+
+    printf("Main menu: \n1. Print sub-menu\n2. Print projects stats\n3. Exit\n");
+    choice = get_input_usi();
+    while (choice < 1 || choice > 3) {
+        printf("Please select a choice within 1 and 3: ");
+        scanf("%hu", &choice);
+    }
+
+
     
     return EXIT_SUCCESS;
 }
