@@ -5,6 +5,9 @@
 */
 #include <stdbool.h>
 
+#ifndef A1_DATA_STRUCTURES_H
+#define A1_DATA_STRUCTURES_H
+
 #define NUM_ACTIVITIES 3
 /********** DON'T MODIFY FROM HERE **********/
 
@@ -33,3 +36,10 @@ typedef struct project {
 }project_t;
 
 /********** DON'T MODIFY UNTIL HERE **********/
+
+typedef struct id_return {
+    unsigned short int i;
+    unsigned short int j;
+}id_return_t;
+
+#endif

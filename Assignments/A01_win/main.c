@@ -10,6 +10,7 @@
 #include <math.h>
 
 #include "a1_functions.h"
+#include "a1_data_structures.h"
 //#include "a1_data_structures.h"
 
 int main()
@@ -19,6 +20,7 @@ int main()
     float planned_project_duration = 0;
     float planned_project_cost = 0;
     _Bool project_completed = 0;
+    const int *num_activities = NUM_ACTIVITIES;
 
     /** 1-  Display a welcome message **/
     
@@ -34,7 +36,7 @@ int main()
     printf("*-----------------------------------------------------*\n");
     printf("                                                       \n");
     printf("* Please enter the project name: ");
-    scanf("%s", &project_name);
+    scanf("%s", project_name);
     printf("* You selected '%s' as your project.\n", project_name);
     printf("* Select your number of milestones below.\n");
     number_milestones = get_input_usi();
@@ -59,7 +61,7 @@ int main()
     
     /** 4- Initialize the project **/
 
-    project_t project = init_project(project_name, milestone_arr, number_milestones, NUM_ACTIVITIES);
+    project_t project = init_project(project_name, milestone_arr, number_milestones, num_activities);
     
     // Calculate project cost & project duration
     for (int i = 0; i < number_milestones; i++) {
@@ -70,10 +72,10 @@ int main()
         }
     }
 
-    planned_project_duration = (int) (ceil(planned_project_duration / 8));
+    planned_project_duration = (ceil(planned_project_duration / 8));
 
     printf("The total planned cost for the project is %.f$.\n", planned_project_cost);
-    printf("The total planned duration for the project is %d.\n", planned_project_duration);
+    printf("The total planned duration for the project is %.f hours.\n", planned_project_duration);
 
     project.planned_cost = planned_project_cost;
     project.planned_duration = planned_project_duration;
@@ -82,16 +84,29 @@ int main()
     print_main_menu();
 
     /** 6- Get user choice and handle it as per the instructions**/
-    unsigned short int choice;
-
-    printf("Main menu: \n1. Print sub-menu\n2. Print projects stats\n3. Exit\n");
-    choice = get_input_usi();
-    while (choice < 1 || choice > 3) {
-        printf("Please select a choice within 1 and 3: ");
-        scanf("%hu", &choice);
+    unsigned short int initchoice = get_input_usi();
+    while (initchoice < 1 || initchoice > 3) {
+        printf("Incorrect value. Please enter a value between 1 and 3\n");
+        initchoice = get_input_usi();
     }
 
-
+    while (initchoice != 3) {
+        if (initchoice == 2) {
+            print_project_stats(project, milestone_arr, number_milestones, NUM_ACTIVITIES);
+            break;
+        }
+        else if (initchoice == 1) {
+            for (int i = 0; i < number_milestones; i++) {
+                printf("Milestone %d name: %s", i + 1, milestone_arr[i].name);
+                for (int j = 0; j < NUM_ACTIVITIES; j++) {
+                    printf("Activity %d name: %s", i + 1, milestone_arr[i].activity_list[j].name);
+                }
+            }
+            break;
+        }
+    }
+    
+    printf("Exiting...");
     
     return EXIT_SUCCESS;
 }

@@ -7,6 +7,8 @@
 
 #include "a1_data_structures.h"
 
+#ifndef A1_FUNCTIONS_H
+#define A1_FUNCTIONS_H
 
 /********** DON'T MODIFY - FROM HERE **********/
 /* 
@@ -79,5 +81,6 @@ void update_project(const milestone_t * milestone_array, int num_milestones, con
 
 // Extra function prototypes/declarations go here
 
-/*Checks if ID is already used*/
-_Bool dupe_id(int id);
+id_return_t get_usi_input_subsubmenu(milestone_t *milestones, unsigned short n_milestones, unsigned short n_activities);
+
+#endif

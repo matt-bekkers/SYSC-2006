@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "a1_data_structures.h"
+#include "a1_functions.h"
 
 unsigned short int get_input_usi(void) {
 	unsigned short int result_usi;
@@ -37,8 +38,8 @@ float get_input_f(void) {
 	return result_f;
 }
 
-project_t init_project(char name[], milestone_t *milestone_list, int number_milestones, const int number_activities) {
-	char project_name[255] = name;
+project_t init_project(char name[], milestone_t *milestone_list, int number_milestones, const int *	number_activities) {
+	char project_name[255];
     unsigned short int actual_project_duration;
     float planned_project_duration, planned_project_cost;
     _Bool project_completed = 0;
@@ -117,6 +118,67 @@ void init_milestone(milestone_t * milestone_to_int, unsigned short int number_ac
 
 void print_main_menu(void) {
 	printf("Main menu. Please select an option.\n1. Update activity\n2. Print stats\n3. Exit\n");
+
+}
+
+void print_milestone_stats(const milestone_t * list_milestones, int num_milestones, const int * number_activities) {
+	for (int i = 0; i < num_milestones; i++) {
+			float milestone_delta;
+			float milestone_delta2;
+
+			for (int j = 0; j < number_activities; j++) {
+				milestone_delta += list_milestones[i].activity_list[j].planned_cost;
+			}
+
+			for (int j = 0; j < number_activities; j++) {
+					milestone_delta2 += list_milestones[i].activity_list[j].planned_duration;
+			}
+
+			unsigned short int completed_act;
+			for (int j = 0; j < number_activities; j++) {
+				if (list_milestones[i].activity_list[j].completed == 1) {
+					completed_act++;
+				}
+			}
+
+			if (list_milestones[i].completed == 1) {
+				printf("Milestone name: %s.\n", list_milestones[i].name);
+				
+				printf("The milestone's budget is off target by %.f$\n", milestone_delta - list_milestones[i].actual_cost);
+				
+				printf("The project's completion date is off-target by %hu days.\n", list_milestones[i].actual_duration - ((short int) milestone_delta2));
+			}
+			else {
+				printf("Milestone name: %s.\n", list_milestones[i].name);
+				
+				printf("Activities completed: %hu/%d.\n", completed_act, number_activities);
+				printf("Planned duration: %.f\n", milestone_delta2);
+				printf("Planned cost: %d$\n", milestone_delta);
+			}
+		}
+}
+
+void print_project_stats(project_t details, const milestone_t * list_milestones, int num_milestones, const int * number_activities) {
+	printf("Project stats:\n");
+	printf("Project name: %s\n", details.name);
+	printf("Status: %s\n", details.completed);
+	if (details.completed == 1) {
+		printf("The project's budget is off-target by %.f$\n", details.actual_cost - details.planned_cost);
+		printf("The project's completion date is off-target by %hu days.\n", details.actual_duration - details.actual_duration);
+	}
+	else {
+		print_milestone_stats(list_milestones, num_milestones, number_activities);
+	}
+}
+
+
+
+void update_activity(activity_t * activity_to_update) {
+    printf("placeholder");
+}
+
+void update_milestone(milestone_t * milestone_to_update, int activities_in_milestone) {
+	printf("placeholder");
 }
 
 /*
