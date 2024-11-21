@@ -44,11 +44,11 @@ user_t *add_user(user_t *users, const char *username, const char *password) {
     user_t *traversal_ptr = users;
     strcpy(new_user->username, username);
     strcpy(new_user->username, username);
-    while(strcmp(new_user->username, traversal_ptr->username) > 0) {
-        traversal_ptr = traversal_ptr->next;
-    }
-    new_user->next = traversal_ptr->next;
-    traversal_ptr->next = new_user;
+    //while(strcmp(new_user->username, traversal_ptr->username) > 0 && traversal_ptr->next != NULL) {
+    //    traversal_ptr = traversal_ptr->next;
+    //}
+    new_user->next = traversal_ptr;//->next;
+    //traversal_ptr->next = new_user;
 
     return users;
 }
@@ -59,11 +59,42 @@ user_t *find_user(user_t *users, const char *username) {
         traversal_ptr = traversal_ptr->next;
         if(traversal_ptr == NULL) {
             printf("ERROR: User not found.\n");
-            return;
+            return NULL;
         }
     }
     printf("User %s found.\n", username);
     return traversal_ptr;
+}
+
+post_t *create_post(const char *text) {
+    post_t *new_post = malloc(sizeof(post_t));
+    assert(new_post != NULL);
+    strcpy(new_post->content, text);
+    new_post->next = NULL;
+    return new_post;
+}
+
+void add_post(user_t *user, const char *text) {
+    post_t *post_to_be_added = create_post(text);
+    post_to_be_added->next = user->posts;
+}
+
+friend_t *create_friend(const char *username) {
+    friend_t *new_friend = malloc(sizeof(friend_t));
+    assert(new_friend != NULL);
+    strcpy(new_friend->username, username);
+    new_friend->next = NULL;
+    return new_friend;
+}
+
+void add_friend(user_t *user, const char *friend) {
+    friend_t *friend_to_be_added = create_friend(friend);
+    friend_t *current = user->friends;
+    while(strcmp(friend_to_be_added->username, current->username) > 0) {
+        current = current->next;
+    }
+    friend_to_be_added->next = current->next;
+    current->next = friend_to_be_added;
 }
 
 /*

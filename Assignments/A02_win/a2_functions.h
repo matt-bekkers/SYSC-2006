@@ -103,6 +103,4 @@ user_t *read_CSV_and_create_users(FILE *file, int num_users);
 
 int menu_choice();
 
-
-
 #endif

@@ -30,19 +30,108 @@ int main()
     while(choice != 6){
         switch (choice){
         case 1:
-            char username[30];
-            char password[30];
+            const char username[30];
+            const char password[30];
             printf("Please enter a username: ");
             scanf("%s", &username);
             printf("Please enter a password: ");
             scanf("%s", &password);
-            add_user();
+            add_user(users, username, password);
             break;
         case 2:
+            const char user_to_find_1[30];
+            const char original_password[15];
+            printf("Please enter a username to update the password: ");
+            scanf("%s", &user_to_find_1);
+            user_t *found_user_1 = find_user(users, user_to_find_1);
+            if(found_user_1 == NULL) {
+                printf("***********************************************\n");
+                printf("     User not found. Returning to menu...      \n");
+                printf("***********************************************\n");
+                break;
+            }
+            printf("Please enter the old password for user %s: ", user_to_find_1);
+            scanf("%s", original_password);
+            if(strcmp(found_user_1->password, original_password) != 0) {
+                printf("***********************************************\n");
+                printf("    Incorrect password. Returning to menu...   \n");
+                printf("***********************************************\n");
+                break;
+            }
+            printf("Password correct. Please enter the new password for user %s: ", user_to_find_1);
+            scanf("%s", &found_user_1->password);
+            printf("***********************************************\n");
+            printf("    Password changed. Returning to menu...    \n");
+            printf("***********************************************\n");
             break;
         case 3:
+            const char user_to_find_2[30];
+            int posts_choice;
+            printf("Please enter a username to manage posts: ");
+            scanf("%s", &user_to_find_2);
+            user_t *found_user_3 = find_user(users, user_to_find_2);
+            if(found_user_3 == NULL) {
+                printf("***********************************************\n");
+                printf("     User not found. Returning to menu...      \n");
+                printf("***********************************************\n");
+                break;
+            }
+            printf("***********************************************\n");
+            printf("          Managing user %d's posts...          \n", user_to_find_2);
+            printf("***********************************************\n");
+            if(found_user_3->posts->content == NULL) {
+                printf("Note: no posts available for this user.");
+            }
+            printf("1. Add a new post\n2. Remove a post\n3. Return to main menu\nEnter your choice: ");
+            scanf("%d", posts_choice);
+            switch (posts_choice)
+            {
+            case 1:
+                const char post_content[250];
+                printf("Please enter your post's text: ");
+                scanf(" %[^\n]s", post_content);
+                add_post(found_user_3, post_content);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                printf("Invalid option. Returning to menu...");
+                break;
+            }
             break;
         case 4:
+            const char user_to_find_4[30];
+            int friends_choice;
+            printf("Please enter a username to manage posts: ");
+            scanf("%s", &user_to_find_4);
+            user_t *found_user_4 = find_user(users, user_to_find_4);
+            if(found_user_4 == NULL) {
+                printf("***********************************************\n");
+                printf("     User not found. Returning to menu...      \n");
+                printf("***********************************************\n");
+                break;
+            }
+            printf("1. Add a new friend\n2. Remove a friend\n3. Return to main menu\n Enter your choice: ");
+            scanf("%d", friends_choice);
+            switch (friends_choice)
+            {
+            case 1:
+                const char new_friend_name[30];
+                printf("Please enter a new friend: ");
+                scanf("%s", &new_friend_name);
+                add_friend(found_user_4, new_friend_name);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            
+            default:
+            printf("Invalid choice. Returning to menu...\n");
+                break;
+            }
             break;
         case 5:
             break;
