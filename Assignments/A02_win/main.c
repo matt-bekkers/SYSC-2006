@@ -24,7 +24,12 @@ int main()
 
     fclose(csv_file);
  
-    print_menu();
+    //print_menu();
+
+    //for(int i = 0; i < 10; i++) {
+    //    printf("%s\n", users->username);
+    //    users = users->next;
+    //}
 
     int choice = menu_choice();
     while(choice != 6){
@@ -37,6 +42,7 @@ int main()
             printf("Please enter a password: ");
             scanf("%s", &password);
             add_user(users, username, password);
+            choice = menu_choice();
             break;
         case 2:
             const char user_to_find_1[30];
@@ -48,6 +54,7 @@ int main()
                 printf("***********************************************\n");
                 printf("     User not found. Returning to menu...      \n");
                 printf("***********************************************\n");
+                choice = menu_choice();
                 break;
             }
             printf("Please enter the old password for user %s: ", user_to_find_1);
@@ -56,6 +63,7 @@ int main()
                 printf("***********************************************\n");
                 printf("    Incorrect password. Returning to menu...   \n");
                 printf("***********************************************\n");
+                choice = menu_choice();
                 break;
             }
             printf("Password correct. Please enter the new password for user %s: ", user_to_find_1);
@@ -63,6 +71,7 @@ int main()
             printf("***********************************************\n");
             printf("    Password changed. Returning to menu...    \n");
             printf("***********************************************\n");
+            choice = menu_choice();
             break;
         case 3:
             const char user_to_find_2[30];
@@ -74,6 +83,7 @@ int main()
                 printf("***********************************************\n");
                 printf("     User not found. Returning to menu...      \n");
                 printf("***********************************************\n");
+                choice = menu_choice();
                 break;
             }
             printf("***********************************************\n");
@@ -91,6 +101,7 @@ int main()
                 printf("Please enter your post's text: ");
                 scanf(" %[^\n]s", post_content);
                 add_post(found_user_3, post_content);
+                choice = menu_choice();
                 break;
             case 2:
                 break;
@@ -103,33 +114,37 @@ int main()
             break;
         case 4:
             const char user_to_find_4[30];
-            int friends_choice;
-            printf("Please enter a username to manage posts: ");
+            int friends_choice = 0;
+            printf("Please enter a username to manage friends: ");
             scanf("%s", &user_to_find_4);
             user_t *found_user_4 = find_user(users, user_to_find_4);
             if(found_user_4 == NULL) {
                 printf("***********************************************\n");
                 printf("     User not found. Returning to menu...      \n");
                 printf("***********************************************\n");
+                choice = menu_choice();
                 break;
             }
             printf("1. Add a new friend\n2. Remove a friend\n3. Return to main menu\n Enter your choice: ");
-            scanf("%d", friends_choice);
-            switch (friends_choice)
-            {
-            case 1:
+            scanf("%d", &friends_choice);
+
+            if (friends_choice == 1) {
                 const char new_friend_name[30];
                 printf("Please enter a new friend: ");
                 scanf("%s", &new_friend_name);
                 add_friend(found_user_4, new_friend_name);
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
+                choice = menu_choice();
+            }
+            else if(friends_choice == 2) {
+                printf("not done yet");
+            }
+            else if(friends_choice == 3) {
+                printf("not done yet");
+            }
             
-            default:
-            printf("Invalid choice. Returning to menu...\n");
+            else {
+                printf("Invalid choice. Returning to menu...\n");
+                choice = menu_choice();
                 break;
             }
             break;

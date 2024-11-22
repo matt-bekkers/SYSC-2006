@@ -28,6 +28,7 @@ void print_menu() {
 }
 
 int menu_choice() {
+    print_menu();
     int choice;
     scanf("%d", &choice);
     while(choice < 1 || choice > 6) {
@@ -41,14 +42,19 @@ int menu_choice() {
 user_t *add_user(user_t *users, const char *username, const char *password) {
     user_t *new_user = malloc(sizeof(user_t));
     assert(new_user != NULL);
+    strcpy(new_user->username, username);
+    new_user->posts = NULL;
+    new_user->friends = NULL;
+    strcpy(new_user->password, password);
     user_t *traversal_ptr = users;
-    strcpy(new_user->username, username);
-    strcpy(new_user->username, username);
-    //while(strcmp(new_user->username, traversal_ptr->username) > 0 && traversal_ptr->next != NULL) {
-    //    traversal_ptr = traversal_ptr->next;
-    //}
-    new_user->next = traversal_ptr;//->next;
-    //traversal_ptr->next = new_user;
+    if(traversal_ptr == NULL) {
+        return new_user;
+    }
+    while(strcmp(new_user->username, traversal_ptr->username) == 0 && traversal_ptr->next != NULL) {
+        traversal_ptr = traversal_ptr->next;
+    }
+    new_user->next = traversal_ptr->next;
+    traversal_ptr->next = new_user;
 
     return users;
 }
@@ -88,13 +94,23 @@ friend_t *create_friend(const char *username) {
 }
 
 void add_friend(user_t *user, const char *friend) {
+
     friend_t *friend_to_be_added = create_friend(friend);
-    friend_t *current = user->friends;
-    while(strcmp(friend_to_be_added->username, current->username) > 0) {
+    assert(friend_to_be_added != NULL);
+    user_t *current = user;
+    assert(current->username != NULL);
+
+    if(user->friends == NULL) {
+        user->friends == friend_to_be_added;
+        return;
+    }
+    
+    while(current->next != NULL && friend_to_be_added != NULL && strcmp(friend_to_be_added->username, current->friends->username) != 0) {
         current = current->next;
     }
-    friend_to_be_added->next = current->next;
-    current->next = friend_to_be_added;
+
+    friend_to_be_added->next = current->friends->next;
+    current->friends->next = friend_to_be_added;
 }
 
 /*
