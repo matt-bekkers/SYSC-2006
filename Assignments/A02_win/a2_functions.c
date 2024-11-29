@@ -1,6 +1,6 @@
 /*****************
-    Student Name 	=
-    Student Number	=
+    Student Name 	= Matthé Bekkers
+    Student Number	= 101297066
 */
 
 #include <stdlib.h>
@@ -83,6 +83,7 @@ post_t *create_post(const char *text) {
 void add_post(user_t *user, const char *text) {
     post_t *post_to_be_added = create_post(text);
     post_to_be_added->next = user->posts;
+    user->posts = post_to_be_added;
 }
 
 friend_t *create_friend(const char *username) {
@@ -111,6 +112,43 @@ void add_friend(user_t *user, const char *friend) {
 
     friend_to_be_added->next = current->friends->next;
     current->friends->next = friend_to_be_added;
+}
+
+void display_all_user_posts(user_t *user) {
+    post_t *current_post = user->posts;
+    
+    while(current_post != NULL) {
+        printf("%s\n", user->posts->content);
+        current_post = current_post->next;
+        count++;
+    }
+}
+
+_Bool delete_post(user_t *user) {
+    user_t *head = user;
+    user = user->next;
+    free(head);
+}
+
+void display_posts_by_n(user_t *user, int number) {
+    char choice_continue = "y";
+    post_t *current_post = user->posts;
+
+    while(choice_continue == "y") {
+        for(int i = 0; i < number; i++) {
+            if(current_post == NULL) {
+                printf("No more posts to display");
+                choice_continue = "n";
+            }
+            printf("%s\n", current_post->content);
+            current_post = current_post->next;
+        }
+
+        printf("Do you wish do print the next three posts?: ");
+        scanf("%c", choice_continue);
+        
+    }
+
 }
 
 /*

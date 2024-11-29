@@ -1,6 +1,6 @@
 /********* main.c ********
-    Student Name 	=
-    Student Number	=
+    Student Name 	= Matthé Bekkers
+    Student Number	= 101297066
 */
 
 // Includes go here
@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
 #include "a2_nodes.h"
 #include "a2_functions.h"
 
@@ -23,13 +24,6 @@ int main()
     user_t *users = read_CSV_and_create_users(csv_file, 50);
 
     fclose(csv_file);
- 
-    //print_menu();
-
-    //for(int i = 0; i < 10; i++) {
-    //    printf("%s\n", users->username);
-    //    users = users->next;
-    //}
 
     int choice = menu_choice();
     while(choice != 6){
@@ -75,7 +69,7 @@ int main()
             break;
         case 3:
             const char user_to_find_2[30];
-            int posts_choice;
+            int posts_choice = 0;
             printf("Please enter a username to manage posts: ");
             scanf("%s", &user_to_find_2);
             user_t *found_user_3 = find_user(users, user_to_find_2);
@@ -87,15 +81,14 @@ int main()
                 break;
             }
             printf("***********************************************\n");
-            printf("          Managing user %d's posts...          \n", user_to_find_2);
+            printf("          Managing %s's posts...          \n", user_to_find_2);
             printf("***********************************************\n");
-            if(found_user_3->posts->content == NULL) {
-                printf("Note: no posts available for this user.");
+            if(found_user_3->posts == NULL) {
+                printf("Note: no posts available for this user.\n");
             }
             printf("1. Add a new post\n2. Remove a post\n3. Return to main menu\nEnter your choice: ");
-            scanf("%d", posts_choice);
-            switch (posts_choice)
-            {
+            scanf("%d", &posts_choice);
+            switch (posts_choice) {
             case 1:
                 const char post_content[250];
                 printf("Please enter your post's text: ");
@@ -104,8 +97,22 @@ int main()
                 choice = menu_choice();
                 break;
             case 2:
+                _Bool post_deleted_successfully = delete_post(found_user_3);
+                if(post_deleted_successfully) {
+                    printf("Deleted post successfully. Updated posts: \n");
+                    if(found_user_3->posts == NULL) {
+                        printf("No posts for this user.");
+                    }
+                    else {
+                        printf("here");
+                        display_all_user_posts(found_user_3);
+                    }
+                }
+                choice = menu_choice();
                 break;
             case 3:
+            printf("Returning to menu...");
+            choice = menu_choice();
                 break;
             default:
                 printf("Invalid option. Returning to menu...");
@@ -149,6 +156,19 @@ int main()
             }
             break;
         case 5:
+            int n_posts_to_display = 3;
+            const char user_to_find_5[30];
+            printf("Please enter a username for which the posts are to be displayed: ");
+            scanf("%s", user_to_find_5);
+            user_t *user_post_display = find_user(users, user_to_find_5);
+            if(user_post_display->posts == NULL || user_post_display == NULL) {
+                break;
+            }
+            
+            display_posts_by_n(user_post_display, n_posts_to_display);
+            
+            //printf("No more posts to display.\n");
+            choice = menu_choice();
             break;
         default:
             printf("Exiting...\n");
