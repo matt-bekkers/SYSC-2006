@@ -42,27 +42,32 @@ int menu_choice() {
 user_t *add_user(user_t *users, const char *username, const char *password) {
     user_t *new_user = malloc(sizeof(user_t));
     assert(new_user != NULL);
+
     strcpy(new_user->username, username);
+    strcpy(new_user->password, password);
     new_user->posts = NULL;
     new_user->friends = NULL;
-    strcpy(new_user->password, password);
-    user_t *traversal_ptr = users;
-    if(traversal_ptr == NULL) {
+
+    if (users == NULL) {
+        new_user->next = NULL;
         return new_user;
     }
-    while(strcmp(new_user->username, traversal_ptr->username) == 0 && traversal_ptr->next != NULL) {
+
+    user_t *traversal_ptr = users;
+    while (traversal_ptr->next != NULL) {
         traversal_ptr = traversal_ptr->next;
     }
-    new_user->next = traversal_ptr->next;
+
     traversal_ptr->next = new_user;
+    new_user->next = NULL;
 
     return users;
 }
 
+
 user_t *find_user(user_t *users, const char *username) {
     user_t *traversal_ptr = users;
-    while(traversal_ptr != NULL && strcmp(traversal_ptr->username, NULL) != 0) {
-        printf("%s\n", traversal_ptr->username);
+    while(traversal_ptr != NULL) {
         if(strcmp(traversal_ptr->username, username) == 0) {
             printf("User found.\n");
             return traversal_ptr;
@@ -145,9 +150,14 @@ void display_all_user_posts(user_t *user) {
 }
 
 _Bool delete_post(user_t *user) {
+    if(user->posts == NULL) {
+        printf("No posts to delete for this user. Returning to menu...\n");
+        return false;
+    }
     post_t *post_del = user->posts;
     user->posts = user->posts->next;
     free(post_del);
+    return true;
 }
 
 void display_posts_by_n(user_t *user, int number) {
@@ -177,22 +187,35 @@ void display_posts_by_n(user_t *user, int number) {
 }
 
 _Bool delete_friend(user_t *user, char *friend_name) {
+    if(user->friends == NULL) {
+        printf("No friends to delete. Returning...\n");
+        return false;
+    }
+
     friend_t *curr = user->friends;
     friend_t *prev = NULL;
     
     while(strcmp(curr->username, friend_name) != 0) {
+        if(curr == NULL) {
+            printf("Friend not found. Returning to menu...\n");
+            return false;
+        }
         
         prev = curr;
         curr = curr->next;
     }
-    if(curr == NULL) {
-            printf("Friend not found. Returning to menu...\n");
-            return false;
+
+    if(prev == NULL) {
+        user->friends = curr->next;
     }
-    prev->next = curr->next;
+    else {
+        prev->next = curr->next;
+    }
+    
+    
     free(curr);
-    printf("Post deleted successfully. Updated post list:\n");
-    display_all_user_posts(user);
+    printf("Friend deleted successfully. Updated post list:\n");
+    display_user_friends(user);
     return true;
 
 }

@@ -142,20 +142,25 @@ int main()
                 scanf("%s", &new_friend_name);
                 add_friend(found_user_4, new_friend_name);
                 choice = menu_choice();
+                break;
             }
             else if(friends_choice == 2) {
                 char friend_to_delete[30] = "";
-                printf("Please select the friend to delete: ");
-                scanf("%s", &friend_to_delete);
                 printf("Current friends list:\n");
                 display_user_friends(found_user_4);
+                printf("Please select the friend to delete: ");
+                scanf("%s", &friend_to_delete);
+                
                 _Bool passed = delete_friend(found_user_4, friend_to_delete);
                 if(!passed) {
                     printf("Error while deleting friend.\n");
                 }
+                choice = menu_choice();
+                break;
             }
             else if(friends_choice == 3) {
                 printf("Returning to menu...\n");
+                choice = menu_choice();
                 break;
             }
             
@@ -184,9 +189,12 @@ int main()
             //printf("No more posts to display.\n");
             choice = menu_choice();
             break;
-        default:
+        case 6:
             printf("Exiting...\n");
             break;
+        default:
+            printf("Invalid choice. Please make another selection.\n");
+            choice = menu_choice();
         }
     }
 

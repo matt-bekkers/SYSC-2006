@@ -1,6 +1,6 @@
 /********* nodes.h ********
-    Student Name 	=
-    Student Number	=
+    Student Name 	= Matthé Bekkers
+    Student Number	= 101297066
 */
 #ifndef A2_NODES_H
 #define A2_NODES_H

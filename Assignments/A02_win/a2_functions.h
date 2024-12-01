@@ -75,7 +75,7 @@ void display_user_friends(user_t *user);
    more posts.
    If there are no more post or the user types “n” or “N”, the function returns. 
 */
-void display_posts_by_n(user_t *users, int number);
+void display_posts_by_n(user_t *user, int number);
 
 /*
    Function that free all users from the database before quitting the application.
