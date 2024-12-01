@@ -15,7 +15,7 @@
 // Your solution goes here
 
 void print_menu() {
-    printf("***********************************************\n");
+    printf("\n***********************************************\n");
     printf("                MAIN MENU:\n");
     printf("***********************************************\n");
     printf("1. Register a new user\n");
@@ -33,7 +33,7 @@ int menu_choice() {
     scanf("%d", &choice);
     while(choice < 1 || choice > 6) {
         printf("Invalid choice. Please try again: ");
-        scanf("%d", choice);
+        scanf("%d", &choice);
     }
 
     return choice;
@@ -61,15 +61,16 @@ user_t *add_user(user_t *users, const char *username, const char *password) {
 
 user_t *find_user(user_t *users, const char *username) {
     user_t *traversal_ptr = users;
-    while(strcmp(traversal_ptr->username, username) != 0) {
-        traversal_ptr = traversal_ptr->next;
-        if(traversal_ptr == NULL) {
-            printf("ERROR: User not found.\n");
-            return NULL;
+    while(traversal_ptr != NULL && strcmp(traversal_ptr->username, NULL) != 0) {
+        printf("%s\n", traversal_ptr->username);
+        if(strcmp(traversal_ptr->username, username) == 0) {
+            printf("User found.\n");
+            return traversal_ptr;
         }
+        traversal_ptr = traversal_ptr->next;
     }
-    printf("User %s found.\n", username);
-    return traversal_ptr;
+    printf("Error: User not found.\n");
+    return NULL;
 }
 
 post_t *create_post(const char *text) {
@@ -98,57 +99,114 @@ void add_friend(user_t *user, const char *friend) {
 
     friend_t *friend_to_be_added = create_friend(friend);
     assert(friend_to_be_added != NULL);
-    user_t *current = user;
-    assert(current->username != NULL);
 
-    if(user->friends == NULL) {
-        user->friends == friend_to_be_added;
+    if (user->friends == NULL) {
+        //printf("Congratulations on a first friend!\n");
+        user->friends = friend_to_be_added;
         return;
     }
-    
-    while(current->next != NULL && friend_to_be_added != NULL && strcmp(friend_to_be_added->username, current->friends->username) != 0) {
+
+    friend_t *current = user->friends;
+    friend_t *previous = NULL;
+
+    while (current != NULL && strcmp(friend_to_be_added->username, current->username) > 0) {
+        previous = current;
         current = current->next;
     }
 
-    friend_to_be_added->next = current->friends->next;
-    current->friends->next = friend_to_be_added;
-}
+    friend_to_be_added->next = current;
+    if (previous == NULL) {
+        user->friends = friend_to_be_added;
+    } else {
+        previous->next = friend_to_be_added;
+    }
 
-void display_all_user_posts(user_t *user) {
-    post_t *current_post = user->posts;
-    
-    while(current_post != NULL) {
-        printf("%s\n", user->posts->content);
-        current_post = current_post->next;
-        count++;
+    friend_t *curr = user->friends;
+    printf("Updated friend list:\n");
+    while (curr != NULL) {
+        printf("%s\n", curr->username);
+        curr = curr->next;
     }
 }
 
+void display_all_user_posts(user_t *user) {
+    char choice_continue = 'y';
+    post_t *current_post = user->posts;
+
+    while(choice_continue == 'y' & current_post != NULL) {
+        if(current_post == NULL) {
+            printf("No more posts to display.\n");
+            return;
+        }
+        printf("%s\n", current_post->content);
+        current_post = current_post->next;
+    }
+    
+}
+
 _Bool delete_post(user_t *user) {
-    user_t *head = user;
-    user = user->next;
-    free(head);
+    post_t *post_del = user->posts;
+    user->posts = user->posts->next;
+    free(post_del);
 }
 
 void display_posts_by_n(user_t *user, int number) {
-    char choice_continue = "y";
+    char choice_continue = 'y';
     post_t *current_post = user->posts;
 
-    while(choice_continue == "y") {
+    while(choice_continue == 'y' & current_post != NULL) {
         for(int i = 0; i < number; i++) {
             if(current_post == NULL) {
                 printf("No more posts to display");
-                choice_continue = "n";
+                return;
             }
             printf("%s\n", current_post->content);
             current_post = current_post->next;
         }
 
         printf("Do you wish do print the next three posts?: ");
-        scanf("%c", choice_continue);
-        
+        scanf(" %c", &choice_continue);
+
+        if (current_post == NULL) {
+            printf("***********************************************\n");
+            printf("No more posts to display for user: %s\n", user->username);
+            printf("***********************************************\n");
+        }
     }
 
+}
+
+_Bool delete_friend(user_t *user, char *friend_name) {
+    friend_t *curr = user->friends;
+    friend_t *prev = NULL;
+    
+    while(strcmp(curr->username, friend_name) != 0) {
+        
+        prev = curr;
+        curr = curr->next;
+    }
+    if(curr == NULL) {
+            printf("Friend not found. Returning to menu...\n");
+            return false;
+    }
+    prev->next = curr->next;
+    free(curr);
+    printf("Post deleted successfully. Updated post list:\n");
+    display_all_user_posts(user);
+    return true;
+
+}
+
+void display_user_friends(user_t *user) {
+    friend_t *curr = user->friends;
+    if(curr == NULL) {
+        printf("No posts for this user.\n");
+        return;
+    }
+    while(curr != NULL) {
+        printf("%s\n", curr->username);
+        curr = curr->next;
+    }
 }
 
 /*

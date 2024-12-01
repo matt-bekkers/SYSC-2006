@@ -26,11 +26,12 @@ int main()
     fclose(csv_file);
 
     int choice = menu_choice();
+
     while(choice != 6){
         switch (choice){
         case 1:
-            const char username[30];
-            const char password[30];
+            const char username[30] = "";
+            const char password[30] = "";
             printf("Please enter a username: ");
             scanf("%s", &username);
             printf("Please enter a password: ");
@@ -39,8 +40,8 @@ int main()
             choice = menu_choice();
             break;
         case 2:
-            const char user_to_find_1[30];
-            const char original_password[15];
+            const char user_to_find_1[30] = "";
+            const char original_password[15] = "";
             printf("Please enter a username to update the password: ");
             scanf("%s", &user_to_find_1);
             user_t *found_user_1 = find_user(users, user_to_find_1);
@@ -68,7 +69,7 @@ int main()
             choice = menu_choice();
             break;
         case 3:
-            const char user_to_find_2[30];
+            const char user_to_find_2[30] = "";
             int posts_choice = 0;
             printf("Please enter a username to manage posts: ");
             scanf("%s", &user_to_find_2);
@@ -90,10 +91,11 @@ int main()
             scanf("%d", &posts_choice);
             switch (posts_choice) {
             case 1:
-                const char post_content[250];
+                const char post_content[250] = "";
                 printf("Please enter your post's text: ");
                 scanf(" %[^\n]s", post_content);
                 add_post(found_user_3, post_content);
+
                 choice = menu_choice();
                 break;
             case 2:
@@ -101,26 +103,25 @@ int main()
                 if(post_deleted_successfully) {
                     printf("Deleted post successfully. Updated posts: \n");
                     if(found_user_3->posts == NULL) {
-                        printf("No posts for this user.");
+                        printf("No posts for this user.\n");
                     }
                     else {
-                        printf("here");
                         display_all_user_posts(found_user_3);
                     }
                 }
                 choice = menu_choice();
                 break;
             case 3:
-            printf("Returning to menu...");
+            printf("Returning to menu...\n");
             choice = menu_choice();
                 break;
             default:
-                printf("Invalid option. Returning to menu...");
+                printf("Invalid option. Returning to menu...\n");
                 break;
             }
             break;
         case 4:
-            const char user_to_find_4[30];
+            const char user_to_find_4[30] = "";
             int friends_choice = 0;
             printf("Please enter a username to manage friends: ");
             scanf("%s", &user_to_find_4);
@@ -136,17 +137,26 @@ int main()
             scanf("%d", &friends_choice);
 
             if (friends_choice == 1) {
-                const char new_friend_name[30];
+                const char new_friend_name[30] = "";
                 printf("Please enter a new friend: ");
                 scanf("%s", &new_friend_name);
                 add_friend(found_user_4, new_friend_name);
                 choice = menu_choice();
             }
             else if(friends_choice == 2) {
-                printf("not done yet");
+                char friend_to_delete[30] = "";
+                printf("Please select the friend to delete: ");
+                scanf("%s", &friend_to_delete);
+                printf("Current friends list:\n");
+                display_user_friends(found_user_4);
+                _Bool passed = delete_friend(found_user_4, friend_to_delete);
+                if(!passed) {
+                    printf("Error while deleting friend.\n");
+                }
             }
             else if(friends_choice == 3) {
-                printf("not done yet");
+                printf("Returning to menu...\n");
+                break;
             }
             
             else {
@@ -164,7 +174,11 @@ int main()
             if(user_post_display->posts == NULL || user_post_display == NULL) {
                 break;
             }
-            
+            if(user_post_display->posts == NULL) {
+                printf("No posts for this user. Returning to menu...\n");
+                choice = menu_choice();
+                break;
+            }
             display_posts_by_n(user_post_display, n_posts_to_display);
             
             //printf("No more posts to display.\n");
