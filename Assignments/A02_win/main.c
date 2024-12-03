@@ -2,6 +2,8 @@
     Student Name 	= Matthé Bekkers
     Student Number	= 101297066
 */
+#ifndef MAIN_C
+#define MAIN_C
 
 // Includes go here
 #include <stdlib.h>
@@ -199,3 +201,5 @@ int main()
     }
 
 }
+
+#endif
